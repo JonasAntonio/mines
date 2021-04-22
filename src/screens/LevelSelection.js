@@ -2,21 +2,44 @@ import React from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from 'react-native'
 
 export default props => {
+    const button = level => {
+        let style = {}
+        let difficultLevel = 0
+        let label = ''
+        switch (level) {
+            case 'easy':
+                style = styles.bgEasy
+                difficultLevel = 0.1
+                label = 'Fácil'
+                break;
+            case 'normal':
+                style = styles.bgNormal
+                difficultLevel = 0.2
+                label = 'Intermediário'
+                break;
+            case 'hard':
+                style = styles.bgHard
+                difficultLevel = 0.3
+                label = 'Difícil'
+                break;
+            default: return
+        }
+        return (
+            <TouchableOpacity style={[styles.button, style]} onPress={() => props.onLevelSelected(difficultLevel)}>
+                <Text style={styles.buttonLabel}>{label}</Text>
+            </TouchableOpacity>
+        )
+    }
+
     return (
         <Modal onRequestClose={props.onCancel} visible={props.isVisible} 
                 animationType='slide' transparent={true}>
             <View style={styles.frame}>
                 <View style={styles.container}>
                     <Text style={styles.title}>Selecione o Nível</Text>
-                    <TouchableOpacity style={[styles.button, styles.bgEasy]} onPress={() => props.onLevelSelected(0.1)}>
-                        <Text style={styles.buttonLabel}>Fácil</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, styles.bgNormal]} onPress={() => props.onLevelSelected(0.2)}>
-                        <Text style={styles.buttonLabel}>Intermediário</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.button, styles.bgHard]} onPress={() => props.onLevelSelected(0.3)}>
-                        <Text style={styles.buttonLabel}>Difícil</Text>
-                    </TouchableOpacity>
+                    {button('easy')}
+                    {button('normal')}
+                    {button('hard')}
                 </View>
             </View>
         </Modal>
